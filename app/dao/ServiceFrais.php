@@ -50,11 +50,22 @@ class ServiceFrais
             DB::table('frais')
                 ->insert(['datemodification'=>$aujourdhui,
                     'id_etat'=>2,
-                    'idvisiteur'=>$id_visiteur,
+                    'id_visiteur'=>$id_visiteur,
                     'anneemois'=>$anneemois,
                     'nbjustificatifs'=>$nbjustificatif]);
         } catch (QueryException $e) {
             throw new MonException($e->getMessage(),5);
+        }
+    }
+    public function deleteFrais($id_frais){
+        try {
+            DB::table('frais')->where('id_frais',  $id_frais)->delete();
+        } catch (QueryException $e) {
+            $erreur=$e->getMessage();
+            if ($e->getCode()==="23000") {
+                $erreur="Impossible de supprimer une fiche ayant des frais liés";
+            }
+            throw new MonException($erreur,5);
         }
     }
 }

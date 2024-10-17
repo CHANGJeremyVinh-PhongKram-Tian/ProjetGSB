@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\dao\ServiceFrais;
 use Exception;
+use App\Models\Frais;
 
 class FraisController
 {
     public function getFraisVisiteur(){
-        $erreur="";
+        $erreur=Session::get('erreur');
+        Session::forget('erreur');
         try {
             $id=Session::get('id');
             $service=new ServiceFrais();
@@ -45,8 +47,8 @@ class FraisController
                 $serviceFrais->updateFrais($id_frais,$anneemois,$nbjustificatifs);
             }
             else{
-                $id_visiteur=$request->input('id_visiteur');
-                $serviceFrais->inserFrais($id_frais,$anneemois,$nbjustificatifs);
+                $id_visiteur=Session::get('id');
+                $serviceFrais->inserFrais($id_visiteur,$anneemois,$nbjustificatifs);
             }
             return redirect('/Lister');
         } catch (\Exception $e){
@@ -67,5 +69,18 @@ class FraisController
             return view('vues/error',compact('erreur'));
         }
     }
+
+    public function removeFrais($id_frais)
+    {
+        $erreur="";
+        try {
+            $serviceFrais = new ServiceFrais();
+            $serviceFrais->deleteFrais($id_frais);
+        } catch (\Exception $e){
+            Session::put('erreur', $e->getMessage());
+        }
+        return redirect('/Lister');
+    }
+
 
 }

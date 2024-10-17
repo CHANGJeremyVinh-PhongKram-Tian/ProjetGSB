@@ -27,4 +27,8 @@ Route::get('/Lister', 'App\Http\Controllers\FraisController@getFraisVisiteur');
 Route::get('/modifierFrais/{id}', 'App\Http\Controllers\FraisController@updateFrais');
 Route::post('/validerFrais', 'App\Http\Controllers\FraisController@validerFrais');
 
-Route::post('/insertFrais', 'App\Http\Controllers\FraisController@addFrais');
+Route::get('/insertFrais', 'App\Http\Controllers\FraisController@addFrais');
+
+Route::get('/removeFrais/{id}', 'App\Http\Controllers\FraisController@removeFrais');
+
+Route::get('/ListerHorsforfait', 'App\Http\Controllers\FraishorsforfaitController@getFraisVisiteur');

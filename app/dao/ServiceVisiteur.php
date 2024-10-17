@@ -31,4 +31,19 @@ class ServiceVisiteur
     public function logout(){
         Session::put('id',0);
     }
+
+    public function insertFrais($id_visiteur,$anneemois , $nbjustificatifs)
+    {
+        try {
+            $aujourdhui = date("Y-m-d");
+            DB::table("frais")
+                ->insert(['datamodification'=>$aujourdhui,
+                    'id_etat'=>2,
+                    'id_visiteur'=>$id_visiteur,
+                    'anneemois'=>$anneemois,
+                    'nbjustificatifs'=>$nbjustificatifs]);
+        } catch (QueryException $e){
+            throw new MonException($e->getMessage());
+        }
+    }
 }
