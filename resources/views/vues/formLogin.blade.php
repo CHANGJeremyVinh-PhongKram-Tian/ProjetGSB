@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-md-6 col-md-offset-3">
-            @include('Vues/error')
+            @include('vues/error')
         </div>
     </div>
 

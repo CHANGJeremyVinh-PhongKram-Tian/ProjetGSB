@@ -22,10 +22,10 @@ Route::post('/login', 'App\Http\Controllers\VisiteurController@signIn');
 
 Route::get('/getLogin', 'App\Http\Controllers\VisiteurController@signOut');
 
-Route::get('/Lister', 'App\Http\Controllers\FraisController@getFraisVisiteur');
+Route::get('/Lister', 'App\Http\Controllers\PraticienController@getPraticiens');
 
 Route::get('/modifierFrais/{id}', 'App\Http\Controllers\FraisController@updateFrais');
-Route::post('/validerFrais', 'App\Http\Controllers\FraisController@validerFrais');
+Route::post('/validateFrais', 'App\Http\Controllers\FraisController@validateFrais');
 
 Route::get('/insertFrais', 'App\Http\Controllers\FraisController@addFrais');
 

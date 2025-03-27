@@ -36,7 +36,7 @@ class FraisController
             return view('vues/error',compact('erreur'));
         }
     }
-    public function validerFrais(Request $request){
+    public function validateFrais(Request $request){
         $erreur="";
         try {
             $id_frais=$request->input('id_frais');

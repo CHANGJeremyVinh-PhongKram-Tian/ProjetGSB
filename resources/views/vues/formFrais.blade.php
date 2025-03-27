@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-{!! Form::open(['url' => '/validerFrais']) !!}
+{!! Form::open(['url' => '/validateFrais']) !!}
 <div class="col-md-12  col-sm-12 well well-md">
     <h1> {{$titreVue}}</h1>
     <div class="form-horizontal">
@@ -35,7 +35,7 @@
                     <span class="glyphicon glyphicon-remove"></span> Annuler</button>
             </div>
         </div>
-        @if($unFrais->id_Frais != 0)
+        @if($unFrais->id_frais != 0)
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
                 <a href=" "><button type="button" class="btn btn-default btn-primary"><span class="glyphicon glyphicon-list"></span> Frais hors forfait</button></a>
