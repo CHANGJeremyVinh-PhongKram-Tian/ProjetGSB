@@ -24,6 +24,9 @@ Route::get('/getLogin', 'App\Http\Controllers\VisiteurController@signOut');
 
 Route::get('/Lister', 'App\Http\Controllers\PraticienController@getPraticiens');
 
+Route::get('/ListerSpe/{id}', 'App\Http\Controllers\SpecialiteController@getPraticienSpe');
+
+
 Route::get('/modifierFrais/{id}', 'App\Http\Controllers\FraisController@updateFrais');
 Route::post('/validateFrais', 'App\Http\Controllers\FraisController@validateFrais');
 
