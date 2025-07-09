@@ -23,4 +23,29 @@ class ServiceSpecialite
             throw new MonException($e->getMessage(),5);
         }
     }
+
+    public function getSpecialite( )
+    {
+        try {
+            $lesSpecialites = DB::table('specialite')
+                ->select()
+                ->orderBy('id_specialite', 'asc')
+                ->get();
+            return $lesSpecialites;
+        } catch (QueryException $e) {
+            throw new MonException($e->getMessage(),5);
+        }
+    }
+    public function getSpecialiteById($id_specialite)
+    {
+        try {
+            $specialite = DB::table("specialite")
+                ->select()
+                ->where("id_specialite", "=", $id_specialite)
+                ->get();
+            return $specialite;
+        } catch (QueryException $e) {
+            throw new MonException($e->getMessage(),5);
+        }
+    }
 }

@@ -13,67 +13,53 @@ class ServicePraticien
         try {
             $lesPraticien = DB::table('praticien')
                 ->select()
-                ->orderBy('nom_praticien', 'desc')
+                ->orderBy('nom_praticien', 'asc')
                 ->get();
             return $lesPraticien;
         } catch (QueryException $e) {
             throw new MonException($e->getMessage(),5);
         }
     }
-    public function getByid($id_frais)
+    public function getPraticienByid($id_praticien)
     {
         try {
-            $unFrais = DB::table('frais')
+            $unPraticien = DB::table('praticien')
                 ->select()
-                ->where('id_frais', '=', $id_frais)
-                ->first();
-            return $unFrais;
+                ->where('id_praticien', '=', $id_praticien)
+                ->get();
+            return $unPraticien;
         } catch (QueryException $e) {
             throw new MonException($e->getMessage(),5);
         }
     }
-    public function updateFrais($id_frais,$anneemois,$nbjustificatif){
+    public function recherche($nom,$prenom,$ville,$specialite,$libre,$type){
         try {
-            $unFrais = DB::table('frais')
-                ->where('id_frais', '=', $id_frais)
-                ->update(['anneemois'=>$anneemois,'nbjustificatifs'=>$nbjustificatif]);
+            $recherche = DB::table('praticien')
+                ->join('posseder','posseder.id_praticien','=','praticien.id_praticien')
+                ->leftJoin('specialite','posseder.id_specialite','=','specialite.id_specialite')
+                ->leftJoin('type_praticien','praticien.id_type_praticien','=','type_praticien.id_type_praticien')
+                ->select()
+                ->where('nom_praticien','=',$nom)
+                ->orWhere('prenom_praticien','=',$prenom)
+                ->orWhere('ville_praticien','=',$ville)
+                ->orWhere('posseder.id_specialite','=',$specialite)
+                ->orWhere('nom_praticien','like','%'.$libre.'%')
+                ->orWhere('praticien.id_type_praticien','=',$type)
+                ->get();
 
+            return $recherche;
         } catch (QueryException $e) {
             throw new MonException($e->getMessage(),5);
         }
     }
-    public function inserPraticien($id_visiteur,$anneemois,$nbjustificatif)
-    {
+    public function getTypes(){
         try {
-            $aujourdhui = date("Y-m-d");
-            DB::table('frais')
-                ->insert(['datemodification'=>$aujourdhui,
-                    'id_etat'=>2,
-                    'id_visiteur'=>$id_visiteur,
-                    'anneemois'=>$anneemois,
-                    'nbjustificatifs'=>$nbjustificatif]);
+            $types = DB::table('type_praticien')
+                ->select()
+                ->get();
+            return $types;
         } catch (QueryException $e) {
             throw new MonException($e->getMessage(),5);
-        }
-    }
-    public function deleteFrais($id_frais){
-        try {
-            DB::table('frais')->where('id_frais',  $id_frais)->delete();
-        } catch (QueryException $e) {
-            $erreur=$e->getMessage();
-            if ($e->getCode()==="23000") {
-                $erreur="Impossible de supprimer une fiche ayant des frais liés";
-            }
-            throw new MonException($erreur,5);
-        }
-    }
-    public function saveAdherent(Adherents $adherent){
-        try{
-            $adherent->save();
-        }catch(QueryException $e){
-            $erreur = $e->getMessage();
-
-            throw new MonException($erreur, 5);
         }
     }
 }

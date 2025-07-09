@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\dao\ServicePosseder;
+use App\dao\ServiceSpecialite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\dao\ServicePraticien;
@@ -134,6 +136,47 @@ class PraticienController
         } catch (Exception $e) {
             $erreur = $e->getMessage();
             return view('vues/error', compact('erreur'));
+        }
+    }
+
+    public function recherche()
+    {
+        $erreur=Session::get('erreur');
+        Session::forget('erreur');
+        try {
+            $service=new ServicePraticien();
+            $mesPraticiens=$service->getPraticien();
+            $types=$service->getTypes();
+            $specialite=new ServiceSpecialite();
+            $Specialites=$specialite->getSpecialite();
+
+            return view('vues/recherche',compact('mesPraticiens','Specialites','types','erreur'));
+        } catch (\Exception $e){
+            $erreur=$e->getMessage();
+            return view('vues/error',compact('erreur'));
+        }
+    }
+    public function validateRecherche(Request $request){
+        $erreur="";
+        try {
+            $nom=$request->input('nom');
+            $libre=$request->input('libre');
+            $prenom=$request->input('prenom');
+            $specialite=$request->input('id_specialite');
+            $ville=$request->input('ville');
+            $type=$request->input('id_type');
+            $service = new ServicePraticien();
+            if($libre==""){
+                $libre = "zzzzzzzzzzzzzzzzzz";
+            }
+
+            $recherche=$service->recherche($nom,$prenom,$ville,$specialite,$libre,$type);
+
+
+            return view('/vues/listeRecherche',compact('recherche','erreur'));
+        } catch (\Exception $e){
+            $erreur=$e->getMessage();
+            return view('vues/error',compact('erreur'));
         }
     }
 
